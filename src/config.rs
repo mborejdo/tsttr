@@ -6,12 +6,18 @@ use regex::{Captures, Regex};
 use serde::{Deserialize, Serialize};
 
 static EXAMPLE_CONFIG: &str = "---
-
+auto_start: true
+hotkeys:
+  - ALT+RETURN
+  - SHIFT+ALT+E
+commands:
+    - wezterm
+    - btm
 ";
 
 pub fn load_config() -> Config {
     if let Some(mut config_path) = dirs::config_dir() {
-        config_path.push("grout");
+        config_path.push("tsttr");
         if !config_path.exists() {
             let _ = create_dir_all(&config_path);
         }
@@ -36,7 +42,7 @@ pub fn load_config() -> Config {
 
 pub fn toggle_autostart() {
     if let Some(mut config_path) = dirs::config_dir() {
-        config_path.push("tastatur");
+        config_path.push("tsttr");
         config_path.push("config.yml");
 
         if let Ok(mut config) = File::open(&config_path) {
@@ -75,10 +81,12 @@ pub fn toggle_autostart() {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone,)]
 pub struct Config {
     pub hotkey: String,
     pub auto_start: bool,
+    pub hotkeys: Vec<String>,
+    pub commands: Vec<String>,
 }
 
 impl Default for Config {
@@ -86,6 +94,8 @@ impl Default for Config {
         Config {
             hotkey: "CTRL+ALT+W".to_string(),
             auto_start: false,
+            hotkeys: vec!["1".to_string(), "2".to_string(), "3".to_string()],
+            commands: vec!["1".to_string(), "2".to_string(), "3".to_string()]
         }
     }
 }

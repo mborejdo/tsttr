@@ -14,13 +14,15 @@ use winapi::um::winuser::{
 use crate::hotkey::{spawn_hotkey_thread, HotkeyType};
 use crate::window::{Window};
 use crate::event::{spawn_foreground_hook};
+use crate::tray::spawn_sys_tray;
 
 mod hotkey;
-mod window;
 mod event;
 mod common;
 mod config;
+mod tray;
 mod autostart;
+mod window;
 
 lazy_static! {
     static ref CHANNEL: (Sender<Message>, Receiver<Message>) = unbounded();
@@ -28,7 +30,7 @@ lazy_static! {
 }
 
 pub enum Message {
-    HotkeyPressed(HotkeyType),
+    HotkeyPressed(HotkeyType, String),
     TrackMouse(Window),
     ActiveWindowChange(Window),
     MouseLeft,
@@ -45,6 +47,7 @@ macro_rules! str_to_wide {
 }
 
 fn main() {
+    let mut track_mouse = false;
     let receiver = &CHANNEL.1.clone();
     let sender = &CHANNEL.0.clone();
     let close_channel = bounded::<()>(3);
@@ -55,23 +58,32 @@ fn main() {
         autostart::toggle_autostart_registry_key(config.auto_start);
     }
 
-    let mut track_mouse = false;
-
-    spawn_hotkey_thread(&"SHIFT+ALT+RETURN", HotkeyType::Main);
-    spawn_hotkey_thread(&"SHIFT+ALT+E", HotkeyType::Second);
+    for (pos, e) in config.hotkeys.iter().enumerate() {
+        let command = config.commands[pos].clone();
+        println!("registering hotkey {} {}", e, command);
+        spawn_hotkey_thread(e.to_string(), HotkeyType::Main, command);
+    }
 
     spawn_foreground_hook(close_channel.1.clone());
+
+    unsafe {
+        spawn_sys_tray();
+    }
+
+    println!("{}", "tsttr gestartet!");
 
     loop {
         select! {
             recv(receiver) -> msg => {
                 match msg.unwrap() {
-                    Message::HotkeyPressed(hotkey_type) => {
-                        println!("{}", "HOT");
+                    Message::HotkeyPressed(hotkey_type, cmd) => {
+                        println!("{}", cmd);
+
                         if hotkey_type == HotkeyType::Main {
-                            Command::new("wezterm")
+                            Command::new(cmd)
                                 .spawn()
                                 .expect("failed to execute process");
+
                         } else  if hotkey_type == HotkeyType::Second {
                             println!("{}", "SECOND");
                         } else {

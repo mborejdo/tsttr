@@ -14,10 +14,11 @@ use crate::CHANNEL;
 #[derive(PartialEq, Clone, Copy, Debug)]
 pub enum HotkeyType {
     Main,
-    Second
+    Second,
+    Third
 }
 
-pub fn spawn_hotkey_thread(hotkey_str: &str, hotkey_type: HotkeyType) {
+pub fn spawn_hotkey_thread(hotkey_str: String, hotkey_type: HotkeyType, cmd: String) {
     let mut hotkey: Vec<String> = hotkey_str
         .split('+')
         .map(|s| s.trim().to_string())
@@ -63,7 +64,7 @@ pub fn spawn_hotkey_thread(hotkey_str: &str, hotkey_type: HotkeyType) {
             DispatchMessageW(&msg);
 
             if msg.message == WM_HOTKEY {
-                let _ = sender.send(Message::HotkeyPressed(hotkey_type));
+                let _ = sender.send(Message::HotkeyPressed(hotkey_type, cmd.to_string()));
             }
         }
     });

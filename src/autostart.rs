@@ -11,8 +11,8 @@ use crate::str_to_wide;
 
 pub unsafe fn toggle_autostart_registry_key(enabled: bool) {
     if let Some(mut app_path) = dirs::config_dir() {
-        app_path.push("tastatur");
-        app_path.push("tastatur.exe");
+        app_path.push("tsttr");
+        app_path.push("tsttr.exe");
 
         if let Ok(current_path) = env::current_exe() {
             if current_path != app_path && enabled {
@@ -21,7 +21,7 @@ pub unsafe fn toggle_autostart_registry_key(enabled: bool) {
 
             let app_path = str_to_wide!(app_path.to_str().unwrap_or_default());
             let mut key_name = str_to_wide!("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
-            let mut value_name = str_to_wide!("tastatur");
+            let mut value_name = str_to_wide!("tsttr");
 
             let mut key: HKEY = mem::zeroed();
 

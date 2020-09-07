@@ -1,5 +1,5 @@
 [package]
-name = "tastatur"
+name = "tsttr"
 version = "0.1.0"
 authors = ["Michael Borejdo <mib@electronic-minds.de>"]
 edition = "2018"
