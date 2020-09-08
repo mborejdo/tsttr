@@ -32,14 +32,15 @@ pub fn spawn_hotkey_thread(hotkey_str: String, hotkey_type: HotkeyType, cmd: Str
     }
 
     let hotkey_str = hotkey_str.to_owned();
-    let k = hotkey.pop().unwrap();
+
     let key;
 
-    if k == "RETURN" {
+    let single_key = hotkey.pop().unwrap();
+    if single_key == "RETURN" {
         key = VK_RETURN as u32;
     } else {
         unsafe {
-            let virtual_key_char = k.chars().next().unwrap();
+            let virtual_key_char = single_key.chars().next().unwrap();
             key = get_vkcode(virtual_key_char);
         }
     }

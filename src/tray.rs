@@ -39,7 +39,7 @@ pub unsafe fn spawn_sys_tray() {
     thread::spawn(|| {
         let hInstance = GetModuleHandleW(ptr::null());
 
-        let class_name = str_to_wide!("tastatur Tray");
+        let class_name = str_to_wide!("tsttr tray");
 
         let mut class = mem::zeroed::<WNDCLASSEXW>();
         class.cbSize = mem::size_of::<WNDCLASSEXW>() as u32;
