@@ -79,8 +79,23 @@ fn main() {
                     Message::HotkeyPressed(hotkey_type, cmd) => {
                         println!("{}", cmd);
 
+                        // split cmd
+                        let mut args: Vec<String> = cmd
+                            .split(' ')
+                            .map(|s| s.trim().to_string())
+                            .collect();
+
+                        // reverse so we can pop
+                        args.reverse();
+                        // get real command from vec
+                        let cmd = args.pop().unwrap();
+                        // reverse back
+                        args.reverse();
+
+                        // execude cmd
                         if hotkey_type == HotkeyType::Main {
-                            Command::new(cmd)
+                            Command::new(cmd.clone())
+                                .args(&args)
                                 .spawn()
                                 .expect("failed to execute process");
 
