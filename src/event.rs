@@ -46,7 +46,6 @@ pub fn spawn_foreground_hook(close_msg: Receiver<()>) {
     });
 }
 
-
 unsafe extern "system" fn callback(
     _hWinEventHook: HWINEVENTHOOK,
     _event: DWORD,

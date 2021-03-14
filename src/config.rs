@@ -1,9 +1,7 @@
-use std::fs::{create_dir_all, write, File};
-
-use std::io::Read;
-
 use regex::{Captures, Regex};
 use serde::{Deserialize, Serialize};
+use std::fs::{create_dir_all, write, File};
+use std::io::Read;
 
 static EXAMPLE_CONFIG: &str = "---
 auto_start: true
@@ -33,7 +31,7 @@ pub fn load_config() -> Config {
         let file_config = config::File::from(config_path).format(config::FileFormat::Yaml);
 
         if let Ok(config) = config.merge(file_config) {
-            return config.clone().try_into().unwrap_or_default();
+            return config.clone().try_into().unwrap();
         }
     };
 
@@ -81,12 +79,24 @@ pub fn toggle_autostart() {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone,)]
+// #[derive(Debug, Serialize, Deserialize, Clone,)]
+// pub struct Keys {
+//     pub hotkeys: Vec<Hotkey>,
+// }
+
+// #[derive(Debug, Serialize, Deserialize, Clone,)]
+// pub struct Hotkey {
+//     pub sequence: String,
+//     pub command: String
+// }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Config {
     pub hotkey: String,
     pub auto_start: bool,
     pub hotkeys: Vec<String>,
     pub commands: Vec<String>,
+    // pub keys: Keys
 }
 
 impl Default for Config {
@@ -95,7 +105,8 @@ impl Default for Config {
             hotkey: "CTRL+ALT+W".to_string(),
             auto_start: false,
             hotkeys: vec!["1".to_string(), "2".to_string(), "3".to_string()],
-            commands: vec!["1".to_string(), "2".to_string(), "3".to_string()]
+            commands: vec!["1".to_string(), "2".to_string(), "3".to_string()],
+            // keys: Keys {hotkeys: vec![]}
         }
     }
 }

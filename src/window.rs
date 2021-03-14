@@ -6,9 +6,7 @@ pub struct Window(pub HWND);
 
 unsafe impl Send for Window {}
 
-impl Window {
-
-}
+impl Window {}
 
 impl Default for Window {
     fn default() -> Self {

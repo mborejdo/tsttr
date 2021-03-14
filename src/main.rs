@@ -1,27 +1,25 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 #![allow(non_snake_case)]
 
-use std::{
-    mem,
-    sync::{Arc, Mutex},
-    process::Command,
-};
+use crate::event::spawn_foreground_hook;
+use crate::hotkey::{spawn_hotkey_thread, HotkeyType};
+use crate::tray::spawn_sys_tray;
+use crate::window::Window;
 use crossbeam_channel::{bounded, select, unbounded, Receiver, Sender};
 use lazy_static::lazy_static;
-use winapi::um::winuser::{
-    TrackMouseEvent, TME_LEAVE, TRACKMOUSEEVENT,
+use std::{
+    mem,
+    process::Command,
+    sync::{Arc, Mutex},
 };
-use crate::hotkey::{spawn_hotkey_thread, HotkeyType};
-use crate::window::{Window};
-use crate::event::{spawn_foreground_hook};
-use crate::tray::spawn_sys_tray;
+use winapi::um::winuser::{TrackMouseEvent, TME_LEAVE, TRACKMOUSEEVENT};
 
-mod hotkey;
-mod event;
+mod autostart;
 mod common;
 mod config;
+mod event;
+mod hotkey;
 mod tray;
-mod autostart;
 mod window;
 
 lazy_static! {
@@ -60,7 +58,7 @@ fn main() {
 
     for (pos, e) in config.hotkeys.iter().enumerate() {
         let command = config.commands[pos].clone();
-        println!("registering hotkey {} {}", e, command);
+        println!("Registriere hotkey {} {}", e, command);
         spawn_hotkey_thread(e.to_string(), HotkeyType::Main, command);
     }
 
@@ -115,9 +113,9 @@ fn main() {
 
                             TrackMouseEvent(&mut event_track);
 
+                            println!("{:?}", window);
                             track_mouse = true;
                         }
-                        println!("{:?}", window);
                     }
                     Message::ActiveWindowChange(window) => {
                         println!("{:?}", window);

@@ -4,7 +4,7 @@ use std::thread;
 
 use winapi::um::winuser::{
     DispatchMessageW, GetKeyboardLayout, GetMessageW, RegisterHotKey, TranslateMessage,
-    VkKeyScanExW, MOD_ALT, VK_RETURN, MOD_CONTROL, MOD_NOREPEAT, MOD_SHIFT, MOD_WIN, WM_HOTKEY,
+    VkKeyScanExW, MOD_ALT, MOD_CONTROL, MOD_NOREPEAT, MOD_SHIFT, MOD_WIN, VK_RETURN, WM_HOTKEY,
 };
 
 use crate::common::report_and_exit;
@@ -15,7 +15,7 @@ use crate::CHANNEL;
 pub enum HotkeyType {
     Main,
     Second,
-    Third
+    Third,
 }
 
 pub fn spawn_hotkey_thread(hotkey_str: String, hotkey_type: HotkeyType, cmd: String) {

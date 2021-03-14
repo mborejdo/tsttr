@@ -1,9 +1,7 @@
 use std::process;
 use std::ptr;
 
-use winapi::um::winuser::{
-    MessageBoxW, MB_OK,
-};
+use winapi::um::winuser::{MessageBoxW, MB_OK};
 
 use crate::str_to_wide;
 
