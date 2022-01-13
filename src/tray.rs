@@ -22,7 +22,7 @@ use winapi::um::winuser::{
     WM_CREATE, WM_INITMENUPOPUP, WM_LBUTTONDBLCLK, WM_RBUTTONUP, WNDCLASSEXW, WS_EX_NOACTIVATE,
 };
 
-use crate::autostart;
+// use crate::autostart;
 use crate::config;
 use crate::str_to_wide;
 use crate::Message;
@@ -32,7 +32,7 @@ use crate::CONFIG;
 const ID_ABOUT: u16 = 2000;
 const ID_EXIT: u16 = 2001;
 const ID_CONFIG: u16 = 2002;
-const ID_AUTOSTART: u16 = 2003;
+// const ID_AUTOSTART: u16 = 2003;
 static mut MODAL_SHOWN: bool = false;
 
 pub unsafe fn spawn_sys_tray() {
@@ -132,13 +132,13 @@ unsafe fn show_popup_menu(hwnd: HWND) {
         about.as_mut_ptr(),
     );
 
-    InsertMenuW(
-        menu,
-        1,
-        MF_BYPOSITION | MF_STRING,
-        ID_AUTOSTART as usize,
-        auto_start.as_mut_ptr(),
-    );
+    // InsertMenuW(
+    //     menu,
+    //     1,
+    //     MF_BYPOSITION | MF_STRING,
+    //     // ID_AUTOSTART as usize,
+    //     auto_start.as_mut_ptr(),
+    // );
 
     SetMenuItemBitmaps(menu, 1, MF_BYPOSITION, ptr::null_mut(), ptr::null_mut());
 
@@ -235,14 +235,14 @@ unsafe extern "system" fn callback(
 
                     MODAL_SHOWN = false;
                 }
-                ID_AUTOSTART => {
-                    config::toggle_autostart();
+                // ID_AUTOSTART => {
+                //     config::toggle_autostart();
 
-                    let mut config = CONFIG.lock().unwrap();
-                    *config = config::load_config();
+                //     let mut config = CONFIG.lock().unwrap();
+                //     *config = config::load_config();
 
-                    autostart::toggle_autostart_registry_key(config.auto_start);
-                }
+                //     autostart::toggle_autostart_registry_key(config.auto_start);
+                // }
                 ID_CONFIG => {
                     if let Some(mut config_path) = dirs::config_dir() {
                         config_path.push("tsttr");
