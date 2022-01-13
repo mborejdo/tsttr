@@ -118,7 +118,6 @@ unsafe fn show_popup_menu(hwnd: HWND) {
     let menu = CreatePopupMenu();
 
     let mut about = str_to_wide!("About...");
-    let mut auto_start = str_to_wide!("Launch at startup");
     let mut open_config = str_to_wide!("Open Config");
     let mut exit = str_to_wide!("Exit");
 
@@ -225,14 +224,6 @@ unsafe extern "system" fn callback(
 
                     MODAL_SHOWN = false;
                 }
-                // ID_AUTOSTART => {
-                //     config::toggle_autostart();
-
-                //     let mut config = CONFIG.lock().unwrap();
-                //     *config = config::load_config();
-
-                //     autostart::toggle_autostart_registry_key(config.auto_start);
-                // }
                 ID_CONFIG => {
                     if let Some(mut config_path) = dirs::config_dir() {
                         config_path.push("tsttr");
