@@ -15,7 +15,6 @@ use std::{
 use winapi::um::winuser::{TrackMouseEvent, TME_LEAVE, TRACKMOUSEEVENT};
 use anyhow::Error;
 
-// mod autostart;
 mod common;
 mod config;
 mod event;
@@ -54,10 +53,6 @@ fn main() {
     let close_channel = bounded::<()>(3);
 
     let config = CONFIG.lock().unwrap().clone();
-
-    // unsafe {
-    //     autostart::toggle_autostart_registry_key(config.auto_start);
-    // }
 
     for (pos, e) in config.hotkeys.iter().enumerate() {
         let command = config.commands[pos].clone();
