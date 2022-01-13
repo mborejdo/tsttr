@@ -9,9 +9,9 @@ use winapi::shared::minwindef::HKEY;
 use winapi::um::winnt::{KEY_SET_VALUE, REG_OPTION_NON_VOLATILE, REG_SZ};
 use winapi::um::winreg::{RegCreateKeyExW, RegDeleteKeyValueW, RegSetValueExW, HKEY_CURRENT_USER};
 
-use crate::{str_to_wide, Result};
+use crate::{str_to_wide};
 
-pub unsafe fn toggle_autostart_registry_key(enabled: bool) -> Result<()> {
+pub unsafe fn toggle_autostart_registry_key(enabled: bool) -> std::io::Result<()> {
     let mut app_path =
         dirs::config_dir().ok_or_else(|| format_err!("Failed to get config directory"))?;
     app_path.push("tsttr");
