@@ -22,7 +22,6 @@ use winapi::um::winuser::{
     WM_CREATE, WM_INITMENUPOPUP, WM_LBUTTONDBLCLK, WM_RBUTTONUP, WNDCLASSEXW, WS_EX_NOACTIVATE,
 };
 
-// use crate::autostart;
 use crate::config;
 use crate::str_to_wide;
 use crate::Message;
@@ -32,7 +31,6 @@ use crate::CONFIG;
 const ID_ABOUT: u16 = 2000;
 const ID_EXIT: u16 = 2001;
 const ID_CONFIG: u16 = 2002;
-// const ID_AUTOSTART: u16 = 2003;
 static mut MODAL_SHOWN: bool = false;
 
 pub unsafe fn spawn_sys_tray() {
@@ -131,14 +129,6 @@ unsafe fn show_popup_menu(hwnd: HWND) {
         ID_ABOUT as usize,
         about.as_mut_ptr(),
     );
-
-    // InsertMenuW(
-    //     menu,
-    //     1,
-    //     MF_BYPOSITION | MF_STRING,
-    //     // ID_AUTOSTART as usize,
-    //     auto_start.as_mut_ptr(),
-    // );
 
     SetMenuItemBitmaps(menu, 1, MF_BYPOSITION, ptr::null_mut(), ptr::null_mut());
 
