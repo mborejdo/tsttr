@@ -13,6 +13,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 use winapi::um::winuser::{TrackMouseEvent, TME_LEAVE, TRACKMOUSEEVENT};
+use anyhow::Error;
 
 mod autostart;
 mod common;
