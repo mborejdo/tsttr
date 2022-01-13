@@ -11,7 +11,7 @@ use winapi::um::winreg::{RegCreateKeyExW, RegDeleteKeyValueW, RegSetValueExW, HK
 
 use crate::{str_to_wide, Result};
 
-pub unsafe fn toggle_autostart_registry_key(enabled: bool) -> std::io::Result<()> {
+pub unsafe fn toggle_autostart_registry_key(enabled: bool) -> Result<()> {
     let mut app_path =
         dirs::config_dir().ok_or_else(|| format_err!("Failed to get config directory"))?;
     app_path.push("tsttr");
