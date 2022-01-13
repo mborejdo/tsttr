@@ -8,7 +8,7 @@ use crate::window::Window;
 use crossbeam_channel::{bounded, select, unbounded, Receiver, Sender};
 use lazy_static::lazy_static;
 use std::{
-    mem,
+    mem, result,
     process::Command,
     sync::{Arc, Mutex},
 };
@@ -43,6 +43,8 @@ macro_rules! str_to_wide {
             .collect::<Vec<_>>()
     }};
 }
+
+pub type Result<T> = result::Result<T, Error>;
 
 fn main() {
     let mut track_mouse = false;
